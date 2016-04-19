@@ -1,0 +1,124 @@
+{%load humanize %}
+{% load cache %}
+{% load compress %}
+
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}DocHub{% endblock %}</title>
+    {% compress css %}
+      <link rel="stylesheet" href="/static/3party/css/foundation.css" />
+      <link rel="stylesheet" href="/static/3party/foundation-icons/foundation-icons.css" />
+      <link rel="stylesheet" href="/static/style/main.css" />
+      <link rel="stylesheet" href="/static/style/syntax-highlight.css" />
+    {% endcompress %}
+
+    <link rel="icon" type="image/png" href="/static/images/favicon.png" />
+    {% compress js %}
+      <script src="/static/3party/js/vendor/modernizr.js"></script>
+      <script src="/static/3party/js/vendor/jquery.js"></script>
+    {% endcompress %}
+
+    {% block header %}
+    {% endblock %}
+  </head>
+  <body>
+    <div class="sticky">
+    <nav class="top-bar" data-topbar="">
+        <ul class="title-area">
+            <li class="name">
+               <h1><a href="/">P402 - DocHub</a></h1>
+            </li>
+            <li class="toggle-topbar menu-icon"><a href="#">Menu</a></li>
+        </ul>
+
+        <section class="top-bar-section">
+            <ul class="left">
+              <li class="has-form">
+                {% if notifcount %}
+                  <a href="{% url 'notif_show' %}" class="button alert">
+                {% else %}
+                  <a href="{% url 'notif_show' %}" class="button">
+                {% endif %}
+                <i class="fi-megaphone"></i>
+                <span id="notif-count-display">{{ notifcount }}</span></a>
+              </li>
+              <li class="divider"></li>
+              <li><a href="{% url 'show_courses' %}">Cours</a></li>
+              <!-- <li><a href="#">Calendrier</a></li> -->
+            </ul>
+            <ul class="right">
+              <li><a href="{% url 'help' %}">Aide</a></li>
+              <li>
+                <a href="https://www.facebook.com/Proj402"><i class="fi-social-facebook"></i></a>
+              </li>
+              <li class="divider"></li>
+              <li class="has-dropdown">
+                  <a href="#"><i class="fi-torso"></i> {{user.name}}</a>
+                  <ul class="dropdown">
+                      <li><a href="{% url 'settings' %}">Profil</a></li>
+                      <li><a href="{% url 'notif_show' %}">Notifications</a></li>
+                      <li><a href="{% url 'logout' %}"><i class="fi-power"></i> Déconnexion</a></li>
+                  </ul>
+              </li>
+            </ul>
+
+        </section>
+    </nav>
+    </div>
+    <div class="row full-width collapse">
+      {% block full-page %}
+        <div class="hide-for-small-only large-2 medium-3 columns sidebar">
+          <ul class="side-nav main-side-nav">
+            {% cache 120 user_followed_list user.netid %}
+              {% if user.followed_courses|length == 0 %}
+                <li><a href="{% url 'show_courses' %}" class="button radius">S'abonner à des cours</a></li>
+              {% else %}
+                <li><a href="{% url 'show_courses' %}" class="button radius">Mes cours</a></li>
+              {% endif %}
+              {% for course in user.followed_courses %}
+                <li class="nav-link">
+                  <a href="{% url 'course_show' course.slug %}">
+                    <i class="fi-folder"></i> {{ course.name }}
+                  </a>
+                </li>
+              {% endfor %}
+            {% endcache %}
+          </ul>
+
+        </div>
+        <div class="large-10 medium-9 columns">
+          {% block content %}
+          {% endblock %}
+        </div>
+      {% endblock %}
+    </div>
+    <footer class="text-center">
+      <hr>
+      <br>
+      <a href="mailto:p402@cerkinfo.be">Contact us</a> -
+      Made with love at
+      <a href="http://urlab.be">
+      <img src="/static/images/urlab.png" style="height: 1em;">
+      UrLab</a> - Code on <a href="http://github.com/UrLab/beta402">GitHub</a>
+      - <a href="http://cerkinfo.be">
+        <img style="height: 1.0em;" src="/static/images/ci.png">
+      </a>
+      <br><br>
+    </footer>
+    {% compress js %}
+      <script src="/static/3party/js/foundation.min.js"></script>
+      <script>
+        $(document).foundation();
+      </script>
+    {% endcompress %}
+    <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$']]}});
+    </script>
+    {% block script %}
+    {% endblock %}
+  </body>
+</html>

@@ -1,0 +1,54 @@
+{% extends "index.html" %}
+
+{% comment %}
+# Copyright 2012, hast. All rights reserved.
+
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or (at
+# your option) any later version.
+{% endcomment %}
+
+{% block content %}
+
+
+  <div class="small-12 columns small-centered">  
+    <div data-alert class="alert-box alert">
+      <strong>Attention</strong> : Cette page ne devrait être utilisée que par les administrateurs. <br>
+      Ne rentrez <strong>pas</strong> votre netid ici.<br><br>
+      Si vous êtes un étudiant, connectez vous avec <a href="/">le gros bouton</a>
+    </div>
+  </div>
+
+  <div class="columns small-centered">
+    <form method="post" action="{% url 'syslogin' %}">
+      {% csrf_token %}
+      <table>
+        <tr>
+          <td colspan="2">
+            {% if form.errors %}
+              <div data-alert class="alert-box alert">
+                Nom d'utilisateur et/ou mot de passe incorrect. Veuillez ré-essayer.
+              </div>
+            {% endif %}
+          </td>
+        </tr>
+        <tr>
+          <td>Nom d'utilisateur</td>
+          <td>{{ form.username }}</td>
+        </tr>
+        <tr>
+          <td>{{ form.password.label_tag }}</td>
+          <td>{{ form.password }}</td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <input type="submit" value="Connexion" class="button expand">
+          </td>
+        </tr>
+      </table>
+      
+      <input type="hidden" name="next" value="{{ next }}">
+    </form>
+  </div>
+{% endblock %}

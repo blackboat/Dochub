@@ -1,0 +1,70 @@
+{% extends "skel.html" %}
+{% load humanize %}
+
+{% comment %}
+# Copyright 2012, hast. All rights reserved.
+
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or (at
+# your option) any later version.
+{% endcomment %}
+
+{% block title %}{{ object.name }}{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="medium-12 columns">
+    <h1>{{ object.name }}</h1>
+  </div>
+</div>
+
+<div class="row">
+  {% if object.courses %}
+    <div class="large-6 medium-12 columns">
+      <h2>Cours
+        {% if follow_children %}
+          <a class="button radius success right" href="{% url 'follow_node_children' object.id %}">
+            S'abonner à tous les cours de cette catégorie
+          </a>
+        {% endif %}
+      </h2>
+      <ul class="small-block-grid-1 medium-block-grid-2">
+        {% for course in object.courses %}
+        <li>
+          <h4>
+            <a href="{% url 'course_show' course.id %}">
+              {% if course in user.followed_courses %}
+                <i class="fi-folder round-icon active"></i> {{ course.slug }} <small>(abonné)</small>
+              {% else %}
+                <i class="fi-folder round-icon"></i> {{ course.slug }}
+              {% endif %}
+
+            </a>
+          </h4>
+           {{ course.name }}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  {% if object.subcategories %}
+    <div class="large-6 medium-12 columns">
+      <h2>Catégories</h2>
+      <ul class="small-block-grid-1 medium-block-grid-2">
+        {% for cat in object.subcategories %}
+        <li>
+          <h4>
+            <a href="{% url 'category_show' cat.id %}">
+              <i class="fi-annotate round-icon small"></i>
+              {{ cat.name }}
+            </a>
+          </h4>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

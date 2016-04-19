@@ -1,0 +1,21 @@
+Django==1.7
+django_polymorphic
+django-template-fragments
+markdown
+celery
+django-celery
+django-suit
+Pillow
+wand
+django_compressor
+pygments
+django-boto
+pyPdf
+
+# Dev
+django-extensions
+ipython
+honcho
+
+# Test
+mock

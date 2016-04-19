@@ -1,0 +1,53 @@
+<div class="sticky">
+  <nav class="top-bar contain-to-grid viewer-bar" data-topbar>
+    <ul class="title-area">
+      <li class="name"></li>
+      <li class="toggle-topbar menu-icon">
+        <a href="#">Viewer</a>
+      </li>
+    </ul>
+    <section class="top-bar-section">
+      <ul class="left">
+        <li class="hide-for-medium-only">
+          <a href="{% url 'course_show' parent.id %}"  >
+            <i class="fi-arrow-left"></i> {{ parent.name }}
+          </a>
+        </li>
+        <li class="hide-for-large-up hide-for-small-only">
+          <a href="{% url 'course_show' parent.id %}" >
+            <i class="fi-arrow-left"></i>
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'document_download' object.id %}"><i class="fi-archive"></i> Télécharger</a>
+        </li>
+        {% if object.original != object.pdf %}
+          <li>
+            <a href="{% url 'document_download_original' object.id %}">
+              <i class="fi-archive"></i> Original
+            </a>
+          </li>
+        {% endif %}
+        <li>
+        </li>
+        <li class="divider viewer-title"></li>
+        <li class="viewer-title">
+          <i class="fi-book"></i> {{ object.name }}
+        </li>
+      </ul>
+      <ul class="right">
+        <li>
+          <a id="zoom-in"><i class="fi-zoom-in"></i> Zoom</a>
+        </li>
+        <li>
+          <a id="zoom-out"><i class="fi-zoom-out"></i> De-zoom</a>
+        </li>
+        {% if is_moderator or user.netid == object.user.netid %}
+          <li>
+            <a href="{% url 'document_edit' object.id %}"><i class="fi-widget"></i> Editer</a>
+          </li>
+        {% endif %}
+      </ul>
+    </section>
+  </nav>
+</div>

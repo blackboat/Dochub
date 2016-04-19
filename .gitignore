@@ -1,0 +1,17 @@
+*pyc
+db.sql
+db.sqlite
+initial_data.json
+ve
+graph.*
+*.pid
+*.log
+www/secret_key.txt
+www/config/local.py
+media/
+
+static/3party/foundation-icons/
+static/3party/foundation/
+static/3party/select/
+static/3party/
+static/CACHE/
