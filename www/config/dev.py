@@ -28,9 +28,3 @@ DATABASES = {
         'NAME': join(BASE_DIR, 'db.sqlite'),
     }
 }
-
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
-    }
-}
